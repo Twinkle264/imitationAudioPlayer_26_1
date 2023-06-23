@@ -14,39 +14,47 @@ private:
     int duration;
 
 public:
-    void setName(const string& name_track){
+    void setName(const string &name_track) {
         name = name_track;
     }
 
-    void setDate(const string& date_str){
+    void setDate(const string &date_str) {
         istringstream iss(date_str);
         iss >> get_time(&date, "%d/%m/%Y");
     }
 
-    void setDuration(int sec){
+    void setDuration(int sec) {
         duration = sec;
     }
 
-    string getName(){
+    string getName() {
         return name;
     }
 
-    void showTrackInfo(){
+    void showTrackInfo() {
         cout << "Name: " << name << endl;
         cout << "Date of creation: " << put_time(&date, "%d/%m/%Y") << endl;
         cout << "Duration: " << duration << " sec." << endl;
     }
 };
 
-vector<Track> playlist;
 
 class Player {
 private:
     bool isPlay = false;
     int idCurrentTrack;
+    vector<Track> playlist;
 
 public:
-    void Play(){
+    void addTrackToPlaylist(Track *track){
+        playlist.push_back(*track);
+    }
+
+    void clearPlaylist(){
+        playlist.clear();
+    }
+
+    void Play() {
         if (!isPlay) {
             string name_target_track;
 
@@ -54,9 +62,9 @@ public:
             cin.ignore();
             getline(cin, name_target_track);
 
-            if (!playlist.empty()){
+            if (!playlist.empty()) {
                 for (int i = 0; i < playlist.size(); ++i) {
-                    if (playlist[i].getName() == name_target_track){
+                    if (playlist[i].getName() == name_target_track) {
                         idCurrentTrack = i;
                         playlist[idCurrentTrack].showTrackInfo();
                         isPlay = true;
@@ -71,21 +79,21 @@ public:
         }
     }
 
-    void Next(){
+    void Next() {
         idCurrentTrack = rand() % playlist.size();
         playlist[idCurrentTrack].showTrackInfo();
         isPlay = true;
     }
 
-    void Pause(){
-        if (isPlay){
+    void Pause() {
+        if (isPlay) {
             isPlay = false;
             cout << "Track \"" << playlist[idCurrentTrack].getName() << "\" on pause" << endl;
         }
     }
 
-    void Stop(){
-        if (isPlay){
+    void Stop() {
+        if (isPlay) {
             isPlay = false;
             cout << "Track \"" << playlist[idCurrentTrack].getName() << "\" stopped" << endl;
         }
